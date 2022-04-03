@@ -43,7 +43,7 @@ contract UnstoppableLender is ReentrancyGuard {
         IReceiver(msg.sender).receiveTokens(
             address(damnValuableToken),
             borrowAmount
-        ); //?
+        );
 
         uint256 balanceAfter = damnValuableToken.balanceOf(address(this));
         require(
