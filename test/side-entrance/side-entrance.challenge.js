@@ -22,13 +22,12 @@ describe("[Challenge] Side entrance", function () {
     this.attacker = await AttackerFactory.deploy();
 
     await this.pool.deposit({ value: ETHER_IN_POOL });
+    expect(await ethers.provider.getBalance(this.pool.address)).to.equal(
+      ETHER_IN_POOL
+    );
 
     this.attackerInitialEthBalance = await ethers.provider.getBalance(
       attacker.address
-    );
-
-    expect(await ethers.provider.getBalance(this.pool.address)).to.equal(
-      ETHER_IN_POOL
     );
   });
 

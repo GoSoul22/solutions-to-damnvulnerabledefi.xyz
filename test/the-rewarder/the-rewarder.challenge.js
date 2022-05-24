@@ -108,8 +108,7 @@ describe("[Challenge] The rewarder", function () {
       this.flashLoanPool.address,
       this.rewarderPool.address,
       this.liquidityToken.address,
-      this.rewardToken.address,
-      attacker.address
+      this.rewardToken.address
     );
     // await !!!
   });

